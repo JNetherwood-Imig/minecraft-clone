@@ -25,6 +25,7 @@ GLFWwindow *renderInitWindow(u32 width, u32 height) {
 	}
 
 	glfwMakeContextCurrent(window);
+	glfwSwapInterval(0);
 
 	printf("Vendor: 	%s\n", glGetString(GL_VENDOR));
 	printf("Renderer: 	%s\n", glGetString(GL_RENDERER));

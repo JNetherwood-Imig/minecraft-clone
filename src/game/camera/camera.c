@@ -17,12 +17,13 @@ void cameraInit(void) {
 }
 
 void cameraUpdate(void) {
-	glm_vec3_scale(global.camera.front, global.camera.speed * global.time.delta, global.camera.forward);
+	f32 scaledSpeed = global.camera.speed * global.time.delta;
+	glm_vec3_scale(global.camera.front, scaledSpeed, global.camera.forward);
 	glm_cross(global.camera.front, global.camera.up, global.camera.right);
 	glm_normalize(global.camera.right);
-	glm_vec3_scale(global.camera.right, global.camera.speed * global.time.delta, global.camera.right);
+	glm_vec3_scale(global.camera.right, scaledSpeed, global.camera.right);
 	vec3 scaledUp;
-	glm_vec3_scale(global.camera.up, global.camera.speed * global.time.delta, scaledUp);
+	glm_vec3_scale(global.camera.up, scaledSpeed, scaledUp);
 	if (global.input.key[INPUT_KEY_FORWARD] == KS_PRESSED || global.input.key[INPUT_KEY_FORWARD] == KS_HELD) {
 		glm_vec3_add(global.camera.position, global.camera.forward, global.camera.position);
 	}
