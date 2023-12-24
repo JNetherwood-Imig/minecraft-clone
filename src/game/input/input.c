@@ -61,8 +61,14 @@ void cursorCallback(GLFWwindow* window, f64 xposIn, f64 yposIn) {
 
 	vec3 front;
 	front[0] = cosf(glm_rad(yaw)) * cosf(glm_rad(pitch));
-	front[1] = sinf(glm_rad(pitch));
+	front[1] = 0.0f;
 	front[2] = sinf(glm_rad(yaw)) * cosf(glm_rad(pitch));
 	glm_normalize(front);
+	vec3 view;
+	view[0] = cosf(glm_rad(yaw)) * cosf(glm_rad(pitch));
+	view[1] = sinf(glm_rad(pitch));
+	view[2] = sinf(glm_rad(yaw)) * cosf(glm_rad(pitch));
+	glm_normalize(view);
 	glm_vec3_copy(front, global.camera.front);
+	glm_vec3_copy(view, global.camera.view);
 }

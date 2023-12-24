@@ -12,6 +12,7 @@ void cameraInit(void) {
 	global.camera.fov   = 45.0f;
 	memcpy(global.camera.position, cameraPosition, sizeof(cameraPosition));
 	memcpy(global.camera.front, cameraFront, sizeof(cameraFront));
+	memcpy(global.camera.view, cameraFront, sizeof(cameraFront));
 	memcpy(global.camera.up, cameraUp, sizeof(cameraUp));
 }
 

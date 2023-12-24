@@ -8,6 +8,7 @@ typedef struct camera {
 	f32 fov;
 	vec3 position;
 	vec3 front;
+	vec3 view;
 	vec3 up;
 	vec3 forward;
 	vec3 right;
