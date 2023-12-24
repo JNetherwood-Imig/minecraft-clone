@@ -11,5 +11,6 @@ void timeInit(void) {
 void timeUpdate(void) {
 	global.time.now = glfwGetTime();
 	global.time.delta = global.time.now - global.time.last;
+	// global.time.delta = 1.0f / 165.0f;
 	global.time.last = global.time.now;
 }

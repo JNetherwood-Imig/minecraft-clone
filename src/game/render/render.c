@@ -47,7 +47,7 @@ void renderBegin(void) {
 
 void renderCameraUpdate(void) {
 	vec3 cameraCenter;
-	glm_vec3_add(global.camera.position, global.camera.view, cameraCenter);
+	glm_vec3_add(global.camera.position, global.camera.front, cameraCenter);
 	glm_lookat(global.camera.position, cameraCenter, global.camera.up, state.view);
 }
 

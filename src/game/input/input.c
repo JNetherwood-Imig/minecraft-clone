@@ -18,8 +18,6 @@ static void updateKeyState(u8 currentState, KeyState* keyState) {
 
 static const f32 defaultSense = 0.05f;
 static f32 sensitivity = defaultSense;
-static f32 yaw = -90.0f;
-static f32 pitch = 0.0f;
 static bool firstMouse = true;
 static f32 lastX = 1280.0f / 2.0f;
 static f32 lastY = 720.0f / 2.0f;
@@ -52,23 +50,15 @@ void cursorCallback(GLFWwindow* window, f64 xposIn, f64 yposIn) {
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;
 
-	yaw += xoffset;
-	pitch += yoffset;
-	if (pitch > 89.0f)
-		pitch = 89.0f;
-	if (pitch < -89.0f)
-		pitch = -89.0f;
+	global.camera.yaw += xoffset;
+	global.camera.pitch += yoffset;
+	if (global.camera.pitch > 89.0f)
+		global.camera.pitch = 89.0f;
+	if (global.camera.pitch < -89.0f)
+		global.camera.pitch = -89.0f;
 
-	vec3 front;
-	front[0] = cosf(glm_rad(yaw)) * cosf(glm_rad(pitch));
-	front[1] = 0.0f;
-	front[2] = sinf(glm_rad(yaw)) * cosf(glm_rad(pitch));
-	glm_normalize(front);
-	vec3 view;
-	view[0] = cosf(glm_rad(yaw)) * cosf(glm_rad(pitch));
-	view[1] = sinf(glm_rad(pitch));
-	view[2] = sinf(glm_rad(yaw)) * cosf(glm_rad(pitch));
-	glm_normalize(view);
-	glm_vec3_copy(front, global.camera.front);
-	glm_vec3_copy(view, global.camera.view);
+	global.camera.front[0] = cosf(glm_rad(global.camera.yaw)) * cosf(glm_rad(global.camera.pitch));
+	global.camera.front[1] = sinf(glm_rad(global.camera.pitch));
+	global.camera.front[2] = sinf(glm_rad(global.camera.yaw)) * cosf(glm_rad(global.camera.pitch));
+
 }

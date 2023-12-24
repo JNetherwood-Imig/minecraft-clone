@@ -1,6 +1,5 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <stdio.h>
 #include "global.h"
 #include "render/render.h"
 #include "input/input.h"
@@ -36,8 +35,6 @@ void gameRun(void) {
 		renderCube(position);
 		renderEnd();
 		timeUpdate();
-		printf("%f\n", global.time.delta);
-		printf("fps: %f\n", 1.0f / global.time.delta);
 	}
 
 	glfwTerminate();
