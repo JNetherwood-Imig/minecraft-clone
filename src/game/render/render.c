@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <cglm/cam.h>
 #include <cglm/cglm.h>
@@ -7,9 +7,6 @@
 #include "render.h"
 #include "render_internal.h"
 #include "../global.h"
-
-#define STB_IMAGE_IMPLEMENTATION
-#include "../../stb_image.h"
 
 RenderStateInternal state = {0};
 
@@ -23,8 +20,7 @@ void renderInit(void) {
 	global.render.window = renderInitWindow(global.render.width, global.render.height);
 	glfwSetFramebufferSizeCallback(global.render.window, framebufferSizeCallback);
 	glEnable(GL_DEPTH_TEST);
-	glewInit();
-
+	
 	renderInitShaders(&state);
 	renderInitTextures(&state);
 	renderInitCube(&state);

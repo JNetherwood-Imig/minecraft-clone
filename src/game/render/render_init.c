@@ -1,18 +1,19 @@
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <cglm/cglm.h>
-#include "../../stb_image.h"
-#include <string.h>
 #include "../utils.h"
 #include "../types.h"
 #include "render_internal.h"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 
 GLFWwindow *renderInitWindow(u32 width, u32 height) {
 	if (!glfwInit()) {
 		ERROR_EXIT("Failed to initialize glfw\n");
 	}
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	#ifdef __APPLE__
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -25,7 +26,13 @@ GLFWwindow *renderInitWindow(u32 width, u32 height) {
 	}
 
 	glfwMakeContextCurrent(window);
-	glfwSwapInterval(0);
+
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+		glfwTerminate();
+		ERROR_EXIT("Failed to load OpenGL\n");
+	}
+
+	glfwSwapInterval(1);
 
 	printf("Vendor: 	%s\n", glGetString(GL_VENDOR));
 	printf("Renderer: 	%s\n", glGetString(GL_RENDERER));

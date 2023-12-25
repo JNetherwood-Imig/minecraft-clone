@@ -16,7 +16,6 @@ void cameraInit(void) {
 	glm_vec3_copy(cameraUp, global.camera.up);
 }
 
-
 void cameraUpdate(void) {
 
 	f32 scaledSpeed = global.camera.speed * global.time.delta;

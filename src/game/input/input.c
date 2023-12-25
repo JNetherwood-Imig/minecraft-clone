@@ -16,7 +16,7 @@ static void updateKeyState(u8 currentState, KeyState* keyState) {
 	}
 }
 
-static const f32 defaultSense = 0.05f;
+static const f32 defaultSense = 0.04f;
 static f32 sensitivity = defaultSense;
 static bool firstMouse = true;
 static f32 lastX = 1280.0f / 2.0f;

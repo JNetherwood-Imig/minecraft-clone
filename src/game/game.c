@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "global.h"
 #include "render/render.h"

@@ -1,5 +1,4 @@
-#include <GL/glew.h>
-#include "../../stb_image.h"
+#include <glad/glad.h>
 #include "../utils.h"
 #include "../types.h"
 #include "../io/io.h"
