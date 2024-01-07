@@ -2,7 +2,7 @@
 
 #include <GLFW/glfw3.h>
 #include <cglm/types.h>
-#include "../types.h"
+#include "types.h"
 
 typedef struct renderState {
 	u32 width;

@@ -1,10 +1,13 @@
 #include <GLFW/glfw3.h>
 #include <string.h>
+#include "../config.h"
 #include "../global.h"
-#include "../io/io.h"
+#include "../io.h"
 #include "../utils.h"
-#include "../input/input.h"
+#include "../input.h"
 #include "../types.h"
+
+ConfigState config = {0};
 
 static const char* CONFIG_DEFAULT =
 	"[controls]\n"
@@ -77,19 +80,19 @@ void configInit(void) {
 
 void configKeyBind(InputKey key, const char* keyName) {
 	if (strlen(keyName) == 1) {
-		global.config.keybinds[key] = (int)keyName[0];
+		config.keybinds[key] = (int)keyName[0];
 	} else {
 		if (strcmp(keyName, "ESC") == 0) {
-			global.config.keybinds[key] = GLFW_KEY_ESCAPE;
+			config.keybinds[key] = GLFW_KEY_ESCAPE;
 		}
 		if (strcmp(keyName, "SHIFT") == 0) {
-			global.config.keybinds[key] = GLFW_KEY_LEFT_SHIFT;
+			config.keybinds[key] = GLFW_KEY_LEFT_SHIFT;
 		}
 		if (strcmp(keyName, "SPACE") == 0) {
-			global.config.keybinds[key] = GLFW_KEY_SPACE;
+			config.keybinds[key] = GLFW_KEY_SPACE;
 		}
 		if (strcmp(keyName, "TAB") == 0) {
-			global.config.keybinds[key] = GLFW_KEY_TAB;
+			config.keybinds[key] = GLFW_KEY_TAB;
 		}
 	}
 }

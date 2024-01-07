@@ -1,12 +1,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <cglm/cam.h>
 #include <cglm/cglm.h>
-#include <cglm/util.h>
-#include <cglm/vec3.h>
-#include "render.h"
-#include "render_internal.h"
+#include "../render.h"
 #include "../global.h"
+#include "../camera.h"
+#include "render_internal.h"
+#include "shader.h"
 
 RenderStateInternal state = {0};
 
@@ -25,7 +24,9 @@ void renderInit(void) {
 	renderInitTextures(&state);
 	renderInitCube(&state);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	bool wireframe = false;
+
+	glPolygonMode(GL_FRONT_AND_BACK, wireframe? GL_LINE : GL_FILL);
 
 	glm_mat4_identity(state.view);
 	glm_mat4_identity(state.projection);
@@ -35,16 +36,16 @@ void renderInit(void) {
 void renderBegin(void) {
 	glClearColor(0.0, 1.0, 1.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glUseProgram(state.shaderDefault);
-	glUniformMatrix4fv(glGetUniformLocation(state.shaderDefault, "view"), 1, GL_FALSE, state.view[0]);
-	glUniformMatrix4fv(glGetUniformLocation(state.shaderDefault, "projection"), 1, GL_FALSE, state.projection[0]);
-	glm_perspective(glm_rad(global.camera.fov), (f32)global.render.width / (f32)global.render.height, 0.1f, 100.0f, state.projection);
+	glUseProgram(shaders.shaderDefault);
+	glUniformMatrix4fv(glGetUniformLocation(shaders.shaderDefault, "view"), 1, GL_FALSE, state.view[0]);
+	glUniformMatrix4fv(glGetUniformLocation(shaders.shaderDefault, "projection"), 1, GL_FALSE, state.projection[0]);
+	glm_perspective(glm_rad(camera.fov), (f32)global.render.width / (f32)global.render.height, 0.01f, 1000.0f, state.projection);
 }
 
 void renderCameraUpdate(void) {
 	vec3 cameraCenter;
-	glm_vec3_add(global.camera.position, global.camera.front, cameraCenter);
-	glm_lookat(global.camera.position, cameraCenter, global.camera.up, state.view);
+	glm_vec3_add(camera.position, camera.front, cameraCenter);
+	glm_lookat(camera.position, cameraCenter, camera.up, state.view);
 }
 
 void renderEnd(void) {
@@ -60,8 +61,9 @@ void renderCube(vec3 position) {
 	glm_mat4_identity(state.model);
 	glm_translate(state.model, position);
 	
-	glUniformMatrix4fv(glGetUniformLocation(state.shaderDefault, "model"), 1, GL_FALSE, state.model[0]);
+	glUniformMatrix4fv(glGetUniformLocation(shaders.shaderDefault, "model"), 1, GL_FALSE, state.model[0]);
 
-	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
 }
 

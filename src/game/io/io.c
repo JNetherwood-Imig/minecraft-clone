@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
-#include "io.h"
+#include "../io.h"
 #include "../utils.h"
 #include "../types.h"
 

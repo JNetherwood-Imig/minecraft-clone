@@ -1,16 +1,16 @@
 #include <GLFW/glfw3.h>
-#include "time.h"
-#include "../global.h"
+#include "../time.h"
+
+TimeState time = {0};
 
 void timeInit(void) {
-	global.time.now = 0;
-	global.time.last = 0;
-	global.time.delta = 0;
+	time.now = 0;
+	time.last = 0;
+	time.delta = 0;
 }
 
 void timeUpdate(void) {
-	global.time.now = glfwGetTime();
-	global.time.delta = global.time.now - global.time.last;
-	// global.time.delta = 1.0f / 165.0f;
-	global.time.last = global.time.now;
+	time.now = glfwGetTime();
+	time.delta = time.now - time.last;
+	time.last = time.now;
 }

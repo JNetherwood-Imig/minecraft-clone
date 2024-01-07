@@ -3,14 +3,14 @@ LFLAGS = -lglfw -lGL -lm
 LFLAGSX = -framework OpenGL -lglfw -lGLEW
 OBJDIR = out/objects/
 OBJECTS = $(OBJDIR)main.o $(OBJDIR)io.o $(OBJDIR)input.o $(OBJDIR)global.o $(OBJDIR)game.o $(OBJDIR)config.o
-OBJECTS += $(OBJDIR)time.o $(OBJDIR)render.o $(OBJDIR)render_init.o $(OBJDIR)render_utils.o $(OBJDIR)camera.o
-OBJECTS += $(OBJDIR)glad.o
+OBJECTS += $(OBJDIR)time.o $(OBJDIR)render.o $(OBJDIR)render_init.o $(OBJDIR)camera.o
+OBJECTS += $(OBJDIR)glad.o $(OBJDIR)shader.o
 
 run: out/program
 	./out/program
 
 out/program: $(OBJECTS)
-	gcc $(LFLAGS) $(OBJECTS) -o out/program
+	gcc $(LFLAGSX) $(OBJECTS) -o out/program
 
 $(OBJDIR)main.o: src/main.c
 	gcc $(CFLAGS) -c src/main.c -o $(OBJDIR)main.o
@@ -30,7 +30,7 @@ $(OBJDIR)global.o: src/game/global.*
 $(OBJDIR)render.o: src/game/render/*
 	gcc $(CFLAGS) -c src/game/render/render.c -o $(OBJDIR)render.o
 	gcc $(CFLAGS) -c src/game/render/render_init.c -o $(OBJDIR)render_init.o
-	gcc $(CFLAGS) -c src/game/render/render_utils.c -o $(OBJDIR)render_utils.o
+	gcc $(CFLAGS) -c src/game/render/shader.c -o $(OBJDIR)shader.o
 
 $(OBJDIR)game.o: src/game/game.*
 	gcc $(CFLAGS) -c src/game/game.c -o $(OBJDIR)game.o

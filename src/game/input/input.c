@@ -1,8 +1,12 @@
 #include <GLFW/glfw3.h>
 #include <cglm/vec3.h>
-#include "../input/input.h"
+#include "../input.h"
+#include "../config.h"
 #include "../global.h"
+#include "../camera.h"
 #include "../types.h"
+
+InputState input = {0};
 
 static void updateKeyState(u8 currentState, KeyState* keyState) {
 	if (currentState) {
@@ -16,16 +20,16 @@ static void updateKeyState(u8 currentState, KeyState* keyState) {
 	}
 }
 
-static const f32 defaultSense = 0.04f;
+static const f32 defaultSense = 0.06f;
 static f32 sensitivity = defaultSense;
 static bool firstMouse = true;
 static f32 lastX = 1280.0f / 2.0f;
 static f32 lastY = 720.0f / 2.0f;
 
 void keyCallback(GLFWwindow* window, i32 key, i32 scancode, i32 action, i32 mods) {
-	for (u32 i = 0; i < sizeof(global.config.keybinds) / sizeof(global.config.keybinds[0]); i++) {
-		if (key == global.config.keybinds[i]) {
-			updateKeyState(action, &global.input.key[i]);
+	for (u32 i = 0; i < sizeof(config.keybinds) / sizeof(config.keybinds[0]); i++) {
+		if (key == config.keybinds[i]) {
+			updateKeyState(action, &input.key[i]);
 		}
 	}
 }
@@ -50,15 +54,15 @@ void cursorCallback(GLFWwindow* window, f64 xposIn, f64 yposIn) {
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;
 
-	global.camera.yaw += xoffset;
-	global.camera.pitch += yoffset;
-	if (global.camera.pitch > 89.0f)
-		global.camera.pitch = 89.0f;
-	if (global.camera.pitch < -89.0f)
-		global.camera.pitch = -89.0f;
+	camera.yaw += xoffset;
+	camera.pitch += yoffset;
+	if (camera.pitch > 89.0f)
+		camera.pitch = 89.0f;
+	if (camera.pitch < -89.0f)
+		camera.pitch = -89.0f;
 
-	global.camera.front[0] = cosf(glm_rad(global.camera.yaw)) * cosf(glm_rad(global.camera.pitch));
-	global.camera.front[1] = sinf(glm_rad(global.camera.pitch));
-	global.camera.front[2] = sinf(glm_rad(global.camera.yaw)) * cosf(glm_rad(global.camera.pitch));
+	camera.front[0] = cosf(glm_rad(camera.yaw)) * cosf(glm_rad(camera.pitch));
+	camera.front[1] = sinf(glm_rad(camera.pitch));
+	camera.front[2] = sinf(glm_rad(camera.yaw)) * cosf(glm_rad(camera.pitch));
 
 }

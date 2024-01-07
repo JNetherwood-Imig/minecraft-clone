@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cglm/vec3.h>
-#include "../types.h"
+#include "types.h"
 
 typedef struct camera {
 	f32 speed;
@@ -14,6 +14,8 @@ typedef struct camera {
 	vec3 right;
 	vec3 up;
 } Camera;
+
+extern Camera camera;
 
 void cameraInit(void);
 void cameraUpdate(void);
