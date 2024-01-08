@@ -14,5 +14,6 @@ void renderInit(void);
 void renderBegin(void);
 void renderMain(void);
 void renderEnd(void);
+void renderClean(void);
 void renderCube(vec3 position);
 void renderCameraUpdate(void);

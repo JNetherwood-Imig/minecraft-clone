@@ -2,10 +2,18 @@
 
 #include "../types.h"
 
+typedef struct shader {
+	u32 id;
+} Shader;
+
 typedef struct shaders {
-    u32 shaderDefault;
+    Shader shaderDefault;
 } Shaders;
 
 extern Shaders shaders;
 
-u32 shaderCreate(const char* vertexShaderPath, const char* fragmentShaderPath);
+Shader shaderCreate(const char* vertexShaderPath, const char* fragmentShaderPath);
+void shaderBind(Shader* shader);
+void shaderUnbind(void);
+void shaderDelete(Shader* shader);
+

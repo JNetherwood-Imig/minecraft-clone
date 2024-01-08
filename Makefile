@@ -4,13 +4,14 @@ LFLAGSX = -framework OpenGL -lglfw -lGLEW
 OBJDIR = out/objects/
 OBJECTS = $(OBJDIR)main.o $(OBJDIR)io.o $(OBJDIR)input.o $(OBJDIR)global.o $(OBJDIR)game.o $(OBJDIR)config.o
 OBJECTS += $(OBJDIR)time.o $(OBJDIR)render.o $(OBJDIR)render_init.o $(OBJDIR)camera.o
-OBJECTS += $(OBJDIR)glad.o $(OBJDIR)shader.o
+OBJECTS += $(OBJDIR)glad.o $(OBJDIR)shader.o $(OBJDIR)vao.o $(OBJDIR)vbo.o $(OBJDIR)ebo.o
+OBJECTS += $(OBJDIR)texture.o
 
 run: out/program
 	./out/program
 
 out/program: $(OBJECTS)
-	gcc $(LFLAGSX) $(OBJECTS) -o out/program
+	gcc $(LFLAGS) $(OBJECTS) -o out/program
 
 $(OBJDIR)main.o: src/main.c
 	gcc $(CFLAGS) -c src/main.c -o $(OBJDIR)main.o
@@ -31,6 +32,10 @@ $(OBJDIR)render.o: src/game/render/*
 	gcc $(CFLAGS) -c src/game/render/render.c -o $(OBJDIR)render.o
 	gcc $(CFLAGS) -c src/game/render/render_init.c -o $(OBJDIR)render_init.o
 	gcc $(CFLAGS) -c src/game/render/shader.c -o $(OBJDIR)shader.o
+	gcc $(CFLAGS) -c src/game/render/vao.c -o $(OBJDIR)vao.o
+	gcc $(CFLAGS) -c src/game/render/vbo.c -o $(OBJDIR)vbo.o
+	gcc $(CFLAGS) -c src/game/render/ebo.c -o $(OBJDIR)ebo.o
+	gcc $(CFLAGS) -c src/game/render/texture.c -o $(OBJDIR)texture.o
 
 $(OBJDIR)game.o: src/game/game.*
 	gcc $(CFLAGS) -c src/game/game.c -o $(OBJDIR)game.o

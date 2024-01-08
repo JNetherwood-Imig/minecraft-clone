@@ -1,8 +1,8 @@
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <cglm/vec3.h>
 #include "../input.h"
 #include "../config.h"
-#include "../global.h"
 #include "../camera.h"
 #include "../types.h"
 
@@ -20,17 +20,24 @@ static void updateKeyState(u8 currentState, KeyState* keyState) {
 	}
 }
 
-static const f32 defaultSense = 0.06f;
+static const f32 defaultSense = 0.04f;
 static f32 sensitivity = defaultSense;
 static bool firstMouse = true;
 static f32 lastX = 1280.0f / 2.0f;
 static f32 lastY = 720.0f / 2.0f;
+
+static bool wireframe;
 
 void keyCallback(GLFWwindow* window, i32 key, i32 scancode, i32 action, i32 mods) {
 	for (u32 i = 0; i < sizeof(config.keybinds) / sizeof(config.keybinds[0]); i++) {
 		if (key == config.keybinds[i]) {
 			updateKeyState(action, &input.key[i]);
 		}
+	}
+
+	if (key == GLFW_KEY_G && action == GLFW_PRESS) {
+		glPolygonMode(GL_FRONT_AND_BACK, wireframe? GL_LINE : GL_FILL);
+		wireframe = !wireframe;
 	}
 }
 

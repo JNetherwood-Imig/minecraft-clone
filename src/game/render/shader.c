@@ -5,7 +5,7 @@
 
 Shaders shaders = {0};
 
-u32 shaderCreate(const char* vertexShaderPath, const char* fragmentShaderPath) {
+Shader shaderCreate(const char* vertexShaderPath, const char* fragmentShaderPath) {
     i32 success;
 	char infoLog[512];
 
@@ -35,13 +35,15 @@ u32 shaderCreate(const char* vertexShaderPath, const char* fragmentShaderPath) {
 		ERROR_EXIT("Error compiling fragment shader.\n%s\n", infoLog);
 	}
 
-	u32 shader = glCreateProgram();
-	glAttachShader(shader, vertexShader);
-	glAttachShader(shader, fragmentShader);
-	glLinkProgram(shader);
-	glGetProgramiv(shader, GL_LINK_STATUS, &success);
+	Shader shader = {0};
+
+	shader.id = glCreateProgram();
+	glAttachShader(shader.id, vertexShader);
+	glAttachShader(shader.id, fragmentShader);
+	glLinkProgram(shader.id);
+	glGetProgramiv(shader.id, GL_LINK_STATUS, &success);
 	if (!success) {
-		glGetProgramInfoLog(shader, 512, NULL, infoLog);
+		glGetProgramInfoLog(shader.id, 512, NULL, infoLog);
 		ERROR_EXIT("Error linking shader.\n%s\n", infoLog);
 	}
 
@@ -52,3 +54,17 @@ u32 shaderCreate(const char* vertexShaderPath, const char* fragmentShaderPath) {
 
 	return shader;
 }
+
+void shaderBind(Shader* shader) {
+	glUseProgram(shader->id);
+}
+
+void shaderUnbind(void) {
+	glUseProgram(0);
+}
+
+void shaderDelete(Shader* shader) {
+	glDeleteShader(shader->id);
+	free(shader);
+}
+

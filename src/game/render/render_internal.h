@@ -2,14 +2,14 @@
 
 #include <GLFW/glfw3.h>
 #include <cglm/types.h>
+#include "texture.h"
 #include "../types.h"
 
 typedef struct renderStateInternal {
 	mat4 model;
 	mat4 view;
 	mat4 projection;
-	u32 shaderDefault;
-	u32 texture;
+	Texture texture;
 	u32 cubeVao;
 	u32 cubeVbo;
 	u32 cubeEbo;

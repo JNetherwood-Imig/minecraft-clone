@@ -10,7 +10,7 @@ static vec3 cameraFront    = { 0.0f, 0.0f, -1.0f };
 static vec3 cameraUp       = { 0.0f, 1.0f,  0.0f };
 
 void cameraInit(void) {
-	camera.speed =   4.0f;
+	camera.speed =   6.0f;
 	camera.fov   =  45.0f;
 	camera.yaw   = -90.0f;
 	camera.pitch =   0.0f;

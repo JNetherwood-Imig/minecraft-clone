@@ -31,19 +31,10 @@ void gameRun(void) {
 		inputHandle();
 		cameraUpdate();
 		renderCameraUpdate();
-		for (int i = 0; i < 16; i++) {
-			for (int j = 0; j < 16; j++) {
-				for (int k = 0; k < 4; k++) {
-					position[0] = i;
-					position[1] = k;
-					position[2] = j;
-					renderCube(position);
-				}
-			}
-		}
+		renderMain();
 		renderEnd();
 		timeUpdate();
 	}
 
-	glfwTerminate();
+	renderClean();
 }
