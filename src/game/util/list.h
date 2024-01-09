@@ -3,7 +3,7 @@
 #include "types.h"
 
 typedef struct node {
-    f32 data;
+    void* data;
     struct node* next;
 } Node;
 
@@ -13,6 +13,6 @@ typedef struct list {
 } List;
 
 void listCreate(List* list);
-Node* addNode(List* list, f32 data, u32 position);
-i32 deleteNode(List* list, f32 data);
-Node* insertNode(List* list, f32 data, u32 position);
+Node* addNode(List* list, void* data);
+i32 deleteNode(List* list, void* data);
+Node* insertNode(List* list, void* data, u32 position);

@@ -1,15 +1,16 @@
+#pragma once
+
 #include "types.h"
 #include <cglm/types.h>
 
 const u32 MAX_SIZE = 64;
 
 typedef struct dictionary {
-    char* keys[MAX_SIZE];
-    vec3 values[MAX_SIZE];
-    u32 size;
+    i32 keys[MAX_SIZE];
+    void* values[MAX_SIZE];
+	u32 size;
 } Dictionary;
 
-u32 getIndex(Dictionary* dict, char* key);
-u32 getValue(Dictionary* dict, char* key);
-void insert(Dictionary* dict, char* key, vec3 value);
-void printDictionary(Dictionary* dict);
+u32 getIndex(Dictionary* dict, i32 key);
+void* getValue(Dictionary* dict, i32 key);
+void insert(Dictionary* dict, i32 key, void* value);

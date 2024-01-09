@@ -1,25 +1,16 @@
 #pragma once
 
-#include <cglm/types.h>
 #include "../util/types.h"
+#include "../util/dictionary.h"
+#include "block_data.h"
+#include <cglm/types-struct.h>
 
-typedef struct {
-	u8 atlasRow;
-	u8 atlasCollumn;
-	f32 xOffsetClose;
-	f32 xOffsetFar;
-	f32 yOffsetClose;
-	f32 yOffsetFar;
-} BlockType;
-
-typedef struct {
-	u32 vao;
-	u32 vbo;
-	u32 ebo;
-	mat4 model;
-	BlockType type;
+typedef struct block {
+	vec3s postiton;
+	// Dictionary faces;
+	FaceData faces[6];
 } Block;
 
-Block createBlock(BlockType* type);
-
-void renderBlock(Block* block, vec3 position);
+Block createBlock(vec3s position);
+void addTransformedVertices(vec3s dest[4], vec3s vertices[4], vec3s position);
+FaceData getFace(Dictionary* dict, i32 face);

@@ -7,7 +7,7 @@ void listCreate(List* list) {
     list->length = 0;
 }
 
-Node* addNode(List* list, f32 data, u32 position) {
+Node* addNode(List* list, void* data) {
     Node* new = NULL;
 
     if (list->head == NULL) {
@@ -31,7 +31,7 @@ Node* addNode(List* list, f32 data, u32 position) {
     return new;
 }
 
-i32 deleteNode(List* list, f32 data) {
+i32 deleteNode(List* list, void* data) {
     Node* current = list->head;
     Node* prev = list->head;
     while (current != NULL) {
@@ -53,7 +53,7 @@ i32 deleteNode(List* list, f32 data) {
     return 0;
 }
 
-Node* insertNode(List* list, f32 data, u32 position) {
+Node* insertNode(List* list, void* data, u32 position) {
     Node* current = list->head;
     while (current != NULL && position != 0) {
         position--;
