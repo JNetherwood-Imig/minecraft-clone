@@ -1,5 +1,5 @@
 #include <glad/glad.h>
-#include "../types.h"
+#include "../util/types.h"
 
 // Create a vao with the given id and make it active
 void vaoCreate(u32* vao) {

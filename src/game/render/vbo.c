@@ -1,6 +1,6 @@
 #include <stdbool.h>
 #include <glad/glad.h>
-#include "../types.h"
+#include "../util/types.h"
 
 // Function to bind a vbo
 void vboBind(u32* vbo) {

@@ -4,7 +4,7 @@
 #include "../input.h"
 #include "../config.h"
 #include "../camera.h"
-#include "../types.h"
+#include "../util/types.h"
 
 InputState input = {0};
 

@@ -2,8 +2,8 @@
 #include <GLFW/glfw3.h>
 #include <cglm/cglm.h>
 #include <stdio.h>
-#include "../utils.h"
-#include "../types.h"
+#include "../util/utils.h"
+#include "../util/types.h"
 #include "render_internal.h"
 #include "shader.h"
 #include "vao.h"

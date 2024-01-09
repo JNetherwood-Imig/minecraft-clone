@@ -6,12 +6,13 @@ OBJECTS = $(OBJDIR)main.o $(OBJDIR)io.o $(OBJDIR)input.o $(OBJDIR)global.o $(OBJ
 OBJECTS += $(OBJDIR)time.o $(OBJDIR)render.o $(OBJDIR)render_init.o $(OBJDIR)camera.o
 OBJECTS += $(OBJDIR)glad.o $(OBJDIR)shader.o $(OBJDIR)vao.o $(OBJDIR)vbo.o $(OBJDIR)ebo.o
 OBJECTS += $(OBJDIR)texture.o
+# OBJECTS += $(OBJDIR)dictionary.o $(OBJDIR)list.o
 
 run: out/program
 	./out/program
 
 out/program: $(OBJECTS)
-	gcc $(LFLAGS) $(OBJECTS) -o out/program
+	gcc $(LFLAGSX) $(OBJECTS) -o out/program
 
 $(OBJDIR)main.o: src/main.c
 	gcc $(CFLAGS) -c src/main.c -o $(OBJDIR)main.o
@@ -48,6 +49,12 @@ $(OBJDIR)time.o: src/game/time/*
 
 $(OBJDIR)camera.o: src/game/camera/*
 	gcc $(CFLAGS) -c src/game/camera/camera.c -o $(OBJDIR)camera.o
+
+$(OBJDIR)dictionary.o: src/game/util/dictionary.*
+	gcc $(CFLAGS) -c src/game/util/dictionary.c -o $(OBJDIR)dictionary.o
+
+$(OBJDIR)list.o: src/game/util/list.*
+	gcc $(CFLAGS) -c src/game/util/list.c -o $(OBJDIR)list.o
 
 clean:
 	rm $(OBJDIR)* out/program

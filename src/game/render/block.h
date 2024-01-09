@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cglm/types.h>
-#include "../types.h"
+#include "../util/types.h"
 
 typedef struct {
 	u8 atlasRow;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "types.h"
+#include "util/types.h"
 #include "input.h"
 
 typedef struct configState {

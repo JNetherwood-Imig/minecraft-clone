@@ -3,8 +3,8 @@
 #include <errno.h>
 #include <string.h>
 #include "../io.h"
-#include "../utils.h"
-#include "../types.h"
+#include "../util/utils.h"
+#include "../util/types.h"
 
 #define IO_READ_CHUNK_SIZE 2097152
 #define IO_READ_ERROR_GENERAL "Error reading file: %s. errno: %d\n"

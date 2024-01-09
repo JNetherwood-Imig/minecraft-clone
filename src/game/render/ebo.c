@@ -1,6 +1,6 @@
 #include <stdbool.h>
 #include <glad/glad.h>
-#include "../types.h"
+#include "../util/types.h"
 
 // Function to bind an ebo
 void eboBind(u32* ebo) {

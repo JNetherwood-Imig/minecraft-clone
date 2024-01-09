@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../types.h"
+#include "../util/types.h"
 
 void vaoCreate(u32* vao);
 void vaoBind(u32 vao);

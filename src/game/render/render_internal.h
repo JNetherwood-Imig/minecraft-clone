@@ -3,7 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <cglm/types.h>
 #include "texture.h"
-#include "../types.h"
+#include "../util/types.h"
 
 typedef struct renderStateInternal {
 	mat4 model;

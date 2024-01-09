@@ -3,9 +3,9 @@
 #include "../config.h"
 #include "../global.h"
 #include "../io.h"
-#include "../utils.h"
+#include "../util/utils.h"
 #include "../input.h"
-#include "../types.h"
+#include "../util/types.h"
 
 ConfigState config = {0};
 

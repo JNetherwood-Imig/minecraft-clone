@@ -1,7 +1,7 @@
 #include <glad/glad.h>
 #include "shader.h"
 #include "../io.h"
-#include "../utils.h"
+#include "../util/utils.h"
 
 Shaders shaders = {0};
 

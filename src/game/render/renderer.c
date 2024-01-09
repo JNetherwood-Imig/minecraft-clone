@@ -4,7 +4,7 @@
 #include "renderer.h"
 #include "block.h"
 #include "shader.h"
-#include "../utils.h"
+#include "../util/utils.h"
 #include "../global.h"
 
 Renderer renderer = {0};
