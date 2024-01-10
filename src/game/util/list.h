@@ -13,6 +13,6 @@ typedef struct list {
 } List;
 
 void listCreate(List* list);
-Node* addNode(List* list, void* data);
+void addNode(List* list, void* data);
 i32 deleteNode(List* list, void* data);
 Node* insertNode(List* list, void* data, u32 position);

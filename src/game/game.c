@@ -1,12 +1,12 @@
 #include <GLFW/glfw3.h>
 #include "global.h"
-#include "render.h"
+#include <stdio.h>
+// #include "render.h"
+#include "render/renderer.h"
 #include "input.h"
 #include "config.h"
 #include "time.h"
 #include "camera.h"
-
-static vec3 position = {0.0f, 0.0f, 0.0f};
 
 static void inputHandle(void) {
 	if (input.key[INPUT_KEY_ESCAPE] == KS_PRESSED || input.key[INPUT_KEY_ESCAPE] == KS_HELD) {
@@ -30,11 +30,12 @@ void gameRun(void) {
 		renderBegin();
 		inputHandle();
 		cameraUpdate();
-		renderCameraUpdate();
+		// renderCameraUpdate();
 		renderMain();
 		renderEnd();
 		timeUpdate();
+		printf("%f\n", camera.position[0]);
 	}
 
-	renderClean();
+	// renderClean();
 }

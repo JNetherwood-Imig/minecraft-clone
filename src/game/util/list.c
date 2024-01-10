@@ -1,34 +1,32 @@
 #include "list.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 
 void listCreate(List* list) {
     list->head = NULL;
     list->length = 0;
 }
 
-Node* addNode(List* list, void* data) {
+void addNode(List* list, void* data) {
     Node* new = NULL;
 
     if (list->head == NULL) {
-        new = malloc(sizeof(Node));
-        if (new == NULL)
-            return NULL;
+        new = malloc(sizeof(Node*));
+        assert(new != NULL);
         
         new->data = data;
         list->head = new;
         new->next = NULL;
     } else {
-        new = malloc(sizeof(Node));
-        if (new == NULL)
-            return NULL;
+        new = malloc(sizeof(Node*));
+        assert(new != NULL);
 
         new->data = data;
         new->next = list->head;
         list->head = new;
+        list->length++;
     }
-
-    return new;
 }
 
 i32 deleteNode(List* list, void* data) {
@@ -53,24 +51,24 @@ i32 deleteNode(List* list, void* data) {
     return 0;
 }
 
-Node* insertNode(List* list, void* data, u32 position) {
-    Node* current = list->head;
-    while (current != NULL && position != 0) {
-        position--;
-    }
+// void insertNode(List* list, void* data, u32 position) {
+//     Node* current = list->head;
+//     while (current != NULL && position != 0) {
+//         position--;
+//     }
 
-    if (position != 0) {
-        printf("Requested position is too far into list!\nRequested position %d, list length is %d.\n", position, list->length);
-        return NULL;
-    }
+//     if (position != 0) {
+//         printf("Requested position is too far into list!\nRequested position %d, list length is %d.\n", position, list->length);
+//         return NULL;
+//     }
 
-    Node* new = malloc(sizeof(Node));
-    if (new == NULL)
-        return NULL;
+//     Node* new = malloc(sizeof(Node));
+//     if (new == NULL)
+//         return NULL;
 
-    new->data = data;
-    new->next = current->next;
-    current->next = new;
+//     new->data = data;
+//     new->next = current->next;
+//     current->next = new;
+//     list->length++;
 
-    return new;
-}
+// }

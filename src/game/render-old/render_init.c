@@ -22,7 +22,7 @@ GLFWwindow *renderInitWindow(u32 width, u32 height) {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	#endif
 
-	GLFWwindow* window = glfwCreateWindow(1280, 720, "Minecraft Clone", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(width, height, "Minecraft Clone", NULL, NULL);
 	if (!window) {
 		glfwTerminate();
 		ERROR_EXIT("Error creating window\n");

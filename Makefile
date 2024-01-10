@@ -3,15 +3,16 @@ LFLAGS = -lglfw -lGL -lm
 LFLAGSX = -framework OpenGL -lglfw -lGLEW
 OBJDIR = out/objects/
 OBJECTS = $(OBJDIR)main.o $(OBJDIR)io.o $(OBJDIR)input.o $(OBJDIR)global.o $(OBJDIR)game.o $(OBJDIR)config.o
-OBJECTS += $(OBJDIR)time.o $(OBJDIR)render.o $(OBJDIR)render_init.o $(OBJDIR)camera.o
+OBJECTS += $(OBJDIR)time.o $(OBJDIR)camera.o $(OBJDIR)renderer.o
 OBJECTS += $(OBJDIR)glad.o $(OBJDIR)shader.o $(OBJDIR)vao.o $(OBJDIR)vbo.o $(OBJDIR)ebo.o
-OBJECTS += $(OBJDIR)texture.o
-# OBJECTS += $(OBJDIR)dictionary.o $(OBJDIR)list.o
+OBJECTS += $(OBJDIR)texture.o $(OBJDIR)chunk.o $(OBJDIR)block_data.o $(OBJDIR)block.o
+OBJECTS += $(OBJDIR)dictionary.o $(OBJDIR)list.o
 
 run: out/program
 	./out/program
 
 out/program: $(OBJECTS)
+	# cp out/program out/program-last
 	gcc $(LFLAGSX) $(OBJECTS) -o out/program
 
 $(OBJDIR)main.o: src/main.c
@@ -29,14 +30,19 @@ $(OBJDIR)input.o: src/game/input/*
 $(OBJDIR)global.o: src/game/global.*
 	gcc $(CFLAGS) -c src/game/global.c -o $(OBJDIR)global.o
 
-$(OBJDIR)render.o: src/game/render/*
-	gcc $(CFLAGS) -c src/game/render/render.c -o $(OBJDIR)render.o
-	gcc $(CFLAGS) -c src/game/render/render_init.c -o $(OBJDIR)render_init.o
+$(OBJDIR)renderer.o: src/game/render/*
+	# gcc $(CFLAGS) -c src/game/render/render.c -o $(OBJDIR)render.o
+	# gcc $(CFLAGS) -c src/game/render/render_init.c -o $(OBJDIR)render_init.o
+	gcc $(CFLAGS) -c src/game/render/renderer.c -o $(OBJDIR)renderer.o
 	gcc $(CFLAGS) -c src/game/render/shader.c -o $(OBJDIR)shader.o
 	gcc $(CFLAGS) -c src/game/render/vao.c -o $(OBJDIR)vao.o
 	gcc $(CFLAGS) -c src/game/render/vbo.c -o $(OBJDIR)vbo.o
 	gcc $(CFLAGS) -c src/game/render/ebo.c -o $(OBJDIR)ebo.o
 	gcc $(CFLAGS) -c src/game/render/texture.c -o $(OBJDIR)texture.o
+	gcc $(CFLAGS) -c src/game/render/block_data.c -o $(OBJDIR)block_data.o
+	gcc $(CFLAGS) -c src/game/render/block.c -o $(OBJDIR)block.o
+	gcc $(CFLAGS) -c src/game/render/chunk.c -o $(OBJDIR)chunk.o
+
 
 $(OBJDIR)game.o: src/game/game.*
 	gcc $(CFLAGS) -c src/game/game.c -o $(OBJDIR)game.o
@@ -60,4 +66,4 @@ clean:
 	rm $(OBJDIR)* out/program
 
 run-last:
-	./out/program
+	./out/program-last
