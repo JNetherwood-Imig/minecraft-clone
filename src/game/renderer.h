@@ -1,7 +1,7 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
-#include "../util/types.h"
+#include "util/types.h"
 
 typedef struct renderer {
 	u32 width;
@@ -15,3 +15,4 @@ void renderInit(void);
 void renderBegin(void);
 void renderMain(void);
 void renderEnd(void);
+void renderClean(void);

@@ -68,3 +68,7 @@ void shaderDelete(Shader* shader) {
 	free(shader);
 }
 
+void shaderUniform(Shader* shader, const char* uniform, f32* value) {
+	glUniformMatrix4fv(glGetUniformLocation(shader->id, uniform), 1, GL_FALSE, value);
+}
+

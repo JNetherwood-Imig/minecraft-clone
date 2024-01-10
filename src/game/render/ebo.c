@@ -12,10 +12,6 @@ void eboUnbind(void) {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void eboNew(u32* ebo) {
-	glGenBuffers(1, &ebo);
-}
-
 // Function to create an ebo with an array of data
 void eboCreate(u32* ebo, void* data, usize size, bool dynamic) {
 	glGenBuffers(1, ebo);

@@ -12,11 +12,6 @@ void vboUnbind(void) {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void vboNew(u32* vbo) {
-	glGenBuffers(1, vbo);
-}
-
-
 // Function to create a vbo from an array of vertices
 void vboCreate(u32* vbo, void* data, usize size, bool dynamic) {
 	// Generate and bind vbo

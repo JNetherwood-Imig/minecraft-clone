@@ -16,4 +16,4 @@ Shader shaderCreate(const char* vertexShaderPath, const char* fragmentShaderPath
 void shaderBind(Shader* shader);
 void shaderUnbind(void);
 void shaderDelete(Shader* shader);
-
+void shaderUniform(Shader* shader, const char* uniform, f32* value);

@@ -13,7 +13,7 @@ run: out/program
 
 out/program: $(OBJECTS)
 	# cp out/program out/program-last
-	gcc $(LFLAGSX) $(OBJECTS) -o out/program
+	gcc $(LFLAGS) $(OBJECTS) -o out/program
 
 $(OBJDIR)main.o: src/main.c
 	gcc $(CFLAGS) -c src/main.c -o $(OBJDIR)main.o
