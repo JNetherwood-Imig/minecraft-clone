@@ -8,21 +8,6 @@
 #include "texture.h"
 #include <glad/glad.h>
 #include <cglm/struct.h>
-#include <stdio.h>
-
-static void printVertexData(Chunk* chunk) {
-	for (int b = 0; b < 3; b++) {
-		for (int f = 0; f < 6; f++) {
-			for (int v = 0; v < 4; v++) {
-				printf("%.1f ", chunk->vertices[24 * b + 4 * f + v].x);
-				printf("%.1f ", chunk->vertices[24 * b + 4 * f + v].y);
-				printf("%.1f\n", chunk->vertices[24 * b + 4 * f + v].z);
-			}
-			printf("\n");
-		}
-		printf("\n");
-	}
-}
 
 static void appendVertices(Chunk* chunk, FaceData data) {
 
@@ -31,6 +16,7 @@ static void appendVertices(Chunk* chunk, FaceData data) {
 		chunk->uvs[chunk->info.vertexCount] = data.uvs[i];
 		chunk->info.vertexCount++;
 	}
+	chunk->info.faceCount++;
 }
 
 static void appendIndices(Chunk* chunk) {
@@ -48,16 +34,20 @@ static void appendIndices(Chunk* chunk) {
 static void generateBlocks(Chunk* chunk) {
 	for (int i = 0; i < 3; i++) {
 		Block block = createBlock((vec3s){{i, 0.0f, 0.0f}});
-
-		for (int j = 0; j < 6; j++) {
-			appendVertices(chunk, block.faces[j]);
-			chunk->info.faceCount++;
+		
+		if (i == 0) {
+			appendVertices(chunk, block.faces[BLOCK_FACE_LEFT]);
 		}
+		if (i == 2) {
+			appendVertices(chunk, block.faces[BLOCK_FACE_RIGHT]);
+		}
+		appendVertices(chunk, block.faces[BLOCK_FACE_FRONT]);
+		appendVertices(chunk, block.faces[BLOCK_FACE_BACK]);
+		appendVertices(chunk, block.faces[BLOCK_FACE_TOP]);
+		appendVertices(chunk, block.faces[BLOCK_FACE_BOTTOM]);
 
 		appendIndices(chunk);
 	}
-	printVertexData(chunk);
-
 }
 
 

@@ -12,6 +12,8 @@ Renderer renderer = {0};
 
 static void framebufferSizeCallback(GLFWwindow* window, i32 width, i32 height) {
 	glViewport(0, 0, width, height);
+	renderer.width = width;
+	renderer.height = height;
 }
 
 static GLFWwindow* createWindow(u32 width, u32 height) {
