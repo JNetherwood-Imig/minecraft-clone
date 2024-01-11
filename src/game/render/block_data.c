@@ -1,14 +1,13 @@
 #include "block_data.h"
-#include <cglm/types-struct.h>
 
-static vec3s rawVertexData[6][4] = {
+vec3s vertexData[6][4] = {
 
 	// Front
 	{
-		{{ -0.5f,  0.5f,  0.5f }},
-		{{  0.5f,  0.5f,  0.5f }},
-		{{  0.5f, -0.5f,  0.5f }},
-		{{ -0.5f, -0.5f,  0.5f }}
+		{{ -0.5f,  0.5f,  0.5f }}, // Top left
+		{{  0.5f,  0.5f,  0.5f }}, // Top right
+		{{  0.5f, -0.5f,  0.5f }}, // Bottom right
+		{{ -0.5f, -0.5f,  0.5f }}  // Bottom left
 	},
 	// Back
 	{
@@ -47,16 +46,10 @@ static vec3s rawVertexData[6][4] = {
 	}
 };
 
-FaceDataRaw faceDataRaw = {
-	.faces = {
-		.keys = {
-			BLOCK_FACE_FRONT,
-			BLOCK_FACE_BACK,
-			BLOCK_FACE_LEFT,
-			BLOCK_FACE_RIGHT,
-			BLOCK_FACE_TOP,
-			BLOCK_FACE_BOTTOM
-		},
-		.values = {rawVertexData}
-	}
+vec2s uvData[4] = {
+	{{ 0.0f, 0.0f }}, // Top left
+	{{ 1.0f, 0.0f }}, // Top right
+	{{ 1.0f, 1.0f }}, // Bottom left
+	{{ 0.0f, 1.0f }}  // Bottom right
 };
+

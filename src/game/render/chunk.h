@@ -5,18 +5,24 @@
 #include "texture.h"
 #include "../util/list.h"
 
-#define CHUNK_SIZE 16;
-#define CHUNK_HEIGHT 8;
+#define CHUNK_SIZE 16
+#define CHUNK_HEIGHT 8
+#define BUFFER_SIZE CHUNK_SIZE * CHUNK_SIZE * CHUNK_HEIGHT * 24
 
-static const u32 CHUNK_VOLUME = 16 * 16 * 8;
-
-
-typedef struct chunk {
-	vec3s vertices[16 * 16 * 8 * 6][4];
-	vec2s uvs[16 * 16 * 8 * 6][4];
-	u32* indices[16 * 16 * 8 * 6 * 4];
-	vec3s position;
+struct MeshInfo {
+	u32 faceCount;
+	u32 vertexCount;
+	u32 uvCount;
 	u32 indexCount;
+	u32 uniqueIndexCount;
+};
+
+typedef struct Chunk {
+	vec3s position;
+	vec3s vertices[BUFFER_SIZE];
+	vec2s uvs[BUFFER_SIZE];
+	u32 indices[BUFFER_SIZE];
+	struct MeshInfo info;
 	u32 vao;
 	u32 vertexVbo;
 	u32 uvVbo;
@@ -25,4 +31,4 @@ typedef struct chunk {
 } Chunk;
 
 Chunk createChunk(vec3s position);
-void renderChunk(Chunk* chunk, Shader* shader);
+void renderChunk(Chunk* chunk);

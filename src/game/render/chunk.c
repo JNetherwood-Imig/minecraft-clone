@@ -6,47 +6,62 @@
 #include "vbo.h"
 #include "ebo.h"
 #include "texture.h"
-#include <string.h>
 #include <glad/glad.h>
-#include <cglm/struct/mat4.h>
 #include <cglm/struct.h>
+#include <stdio.h>
 
-void genChunk(Chunk* chunk);
-
-static void addFaceVertices(Chunk* chunk, Block* block, BlockFace face, u32 faceCount) {
-	memcpy(&chunk->vertices[face + faceCount], &block->faces[face], sizeof(block->faces));
-}
-
-static void addFaceIndices(Chunk* chunk, u32 amount) {
-	u32 indices[] = {
-		0, 1, 3,
-		1, 2, 3
-	};
-	for (int i = 0; i < amount; i++) {
-		chunk->indices[i] = indices;
-
-		chunk->indexCount += 4;
+static void printVertexData(Chunk* chunk) {
+	for (int b = 0; b < 3; b++) {
+		for (int f = 0; f < 6; f++) {
+			for (int v = 0; v < 4; v++) {
+				printf("%.1f ", chunk->vertices[24 * b + 4 * f + v].x);
+				printf("%.1f ", chunk->vertices[24 * b + 4 * f + v].y);
+				printf("%.1f\n", chunk->vertices[24 * b + 4 * f + v].z);
+			}
+			printf("\n");
+		}
+		printf("\n");
 	}
 }
 
-void genBlocks(Chunk* chunk) {
-	chunk->indexCount = 0;
-	for (int i = 0; i < 3; i++) {
-		Block block = createBlock((vec3s){{i, 0, 0}});
+static void appendVertices(Chunk* chunk, FaceData data) {
 
-		u32 faceCount = 0;
+	for (int i = 0; i < 4; i++) {
+		chunk->vertices[chunk->info.vertexCount]  = data.vertices[i];
+		chunk->uvs[chunk->info.vertexCount] = data.uvs[i];
+		chunk->info.vertexCount++;
+	}
+}
+
+static void appendIndices(Chunk* chunk) {
+	for (int i = 0; i < chunk->info.faceCount; i++) {
+		chunk->indices[chunk->info.indexCount++] = 0 + chunk->info.uniqueIndexCount;
+		chunk->indices[chunk->info.indexCount++] = 1 + chunk->info.uniqueIndexCount;
+		chunk->indices[chunk->info.indexCount++] = 3 + chunk->info.uniqueIndexCount;
+		chunk->indices[chunk->info.indexCount++] = 1 + chunk->info.uniqueIndexCount;
+		chunk->indices[chunk->info.indexCount++] = 2 + chunk->info.uniqueIndexCount;
+		chunk->indices[chunk->info.indexCount++] = 3 + chunk->info.uniqueIndexCount;
+		chunk->info.uniqueIndexCount += 4;
+	}
+}
+
+static void generateBlocks(Chunk* chunk) {
+	for (int i = 0; i < 3; i++) {
+		Block block = createBlock((vec3s){{i, 0.0f, 0.0f}});
+
 		for (int j = 0; j < 6; j++) {
-			addFaceVertices(chunk, &block, j, i * 6);
+			appendVertices(chunk, block.faces[j]);
+			chunk->info.faceCount++;
 		}
 
-		faceCount += 6;
-
-		addFaceIndices(chunk, faceCount);
+		appendIndices(chunk);
 	}
+	printVertexData(chunk);
+
 }
 
 
-void buildChunk(Chunk* chunk) {
+static void buildChunk(Chunk* chunk) {
 
 	vaoCreate(&chunk->vao);
 
@@ -59,23 +74,26 @@ void buildChunk(Chunk* chunk) {
 	eboCreate(&chunk->ebo, &chunk->indices, sizeof(chunk->indices), false);
 
 	chunk->texture = textureCreate("assets/grass.png");
-	vaoUnbind();
 	vboUnbind();
+	vaoUnbind();
 }
 
 Chunk createChunk(vec3s position) {
-	Chunk chunk = { .position = position };
-	genBlocks(&chunk);
-	buildChunk(&chunk);
+	Chunk self = {
+		.position = position,
+		.info = {0}
+	};
+	generateBlocks(&self);
+	buildChunk(&self);
 
-	return chunk;
+	return self;
 }
 
-void renderChunk(Chunk* chunk, Shader* shader) {
-	shaderBind(shader);
-	shaderUniform(shader, "model", (f32*)glms_translate(glms_mat4_identity(), chunk->position).raw);
+void renderChunk(Chunk* chunk) {
+	shaderBind(&shaders.shaderDefault);
+	shaderUniform(&shaders.shaderDefault, "model", glms_translate(glms_mat4_identity(), chunk->position).raw[0]);
 	vaoBind(chunk->vao);
 	textureBind(chunk->texture.id);
-	glDrawElements(GL_TRIANGLES, chunk->indexCount, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, chunk->info.indexCount, GL_UNSIGNED_INT, 0);
 }
 

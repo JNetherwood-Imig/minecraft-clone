@@ -10,8 +10,6 @@
 
 Renderer renderer = {0};
 
-static mat4 view, projection;
-
 static void framebufferSizeCallback(GLFWwindow* window, i32 width, i32 height) {
 	glViewport(0, 0, width, height);
 }
@@ -52,7 +50,7 @@ static GLFWwindow* createWindow(u32 width, u32 height) {
 static void renderCameraUpdate(void) {
 	vec3 cameraCenter;
 	glm_vec3_add(camera.position, camera.front, cameraCenter);
-	glm_lookat(camera.position, cameraCenter, camera.up, view);
+	glm_lookat(camera.position, cameraCenter, camera.up, renderer.state.view.raw);
 }
 
 Chunk chunk;
@@ -61,33 +59,35 @@ void renderInit(void) {
 	renderer.width = 1280;
 	renderer.height = 720;
 	renderer.window = createWindow(renderer.width, renderer.height);
+	shaders.shaderDefault = shaderCreate("shaders/default.vert", "shaders/default.frag");
 
-	chunk = createChunk((vec3s){{0.0f, 0.0f, 5.0f}});
+	chunk = createChunk((vec3s){{0.0f, 0.0f, 0.0f}});
 
 	glfwSetFramebufferSizeCallback(renderer.window, framebufferSizeCallback);
+	glEnable(GL_DEPTH_TEST);
 
 	shaderBind(&shaders.shaderDefault);
 
-	glm_mat4_identity(view);
-	glm_mat4_identity(projection);
+	renderer.state.view = glms_mat4_identity();
+	renderer.state.projection = glms_mat4_identity();
 }
 
 void renderBegin(void) {
 	glClearColor(0.0, 1.0, 1.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	shaderUniform(&shaders.shaderDefault, "view", view[0]);
-	shaderUniform(&shaders.shaderDefault, "projection", projection[0]);
+	shaderUniform(&shaders.shaderDefault, "view", renderer.state.view.raw[0]);
+	shaderUniform(&shaders.shaderDefault, "projection", renderer.state.projection.raw[0]);
 	glm_perspective(
 		glm_rad(camera.fov),
 		(f32)renderer.width / (f32)renderer.height,
 		0.1f,
 		100.0f,
-		projection);
+		renderer.state.projection.raw);
 }
 
 void renderMain(void) {
-	renderChunk(&chunk, &shaders.shaderDefault);
+	renderChunk(&chunk);
 	renderCameraUpdate();
 }
 

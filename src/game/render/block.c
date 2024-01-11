@@ -1,34 +1,21 @@
 #include "block.h"
 #include "block_data.h"
-#include <cglm/cglm.h>
 #include <cglm/struct.h>
-#include <cglm/struct/vec3.h>
-#include <string.h>
 
-vec2s defaultUvs[4] = {
-	{{ 0.0f, 0.0f }},
-	{{ 1.0f, 0.0f }},
-	{{ 1.0f, 1.0f }},
-	{{ 0.0f, 1.0f }}
-};
-
-static void addTransformedVertices(vec3s dest[4], FaceDataRaw* faceDataRaw, vec3s position) {
+static void addTransformedVertices(FaceData* destination, vec3s* vertices, vec3s position) {
 	for (int i = 0; i < 4; i++) {
-		dest[i] = glms_vec3_add(*(vec3s*)&faceDataRaw->faces.values[0][i], position);
+		destination->vertices[i] = glms_vec3_add(vertices[i], position);
 	}
 }
 
 Block createBlock(vec3s position) {
 
+	Block self = { .postiton = position };
 
-	Block block = { .postiton = position };
-	
-	
 	for (int i = 0; i < 6; i++) {
-		addTransformedVertices(block.faces[i].vertices, &faceDataRaw, block.postiton);
-		memcpy(block.faces[i].uvs, &defaultUvs[0], sizeof(vec2s));
+		addTransformedVertices(&self.faces[i], vertexData[i], self.postiton);
+		self.faces[i].uvs = uvData;
 	}
 
-	return block;
+	return self;
 }
-
