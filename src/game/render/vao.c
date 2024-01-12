@@ -8,8 +8,8 @@ void vaoCreate(u32* vao) {
 }
 
 // Make the given vao active
-void vaoBind(u32 vao) {
-	glBindVertexArray(vao);
+void vaoBind(u32* vao) {
+	glBindVertexArray(*vao);
 }
 
 // Unbind active vao

@@ -2,12 +2,12 @@
 #include <glad/glad.h>
 #include "../util/types.h"
 
-// Function to bind a vbo
+// Abstraction for binding a vbo
 void vboBind(u32* vbo) {
 	glBindBuffer(GL_ARRAY_BUFFER, *vbo);
 }
 
-// Function to unbind active vbo
+// Abstraction for unbinding active vbo
 void vboUnbind(void) {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

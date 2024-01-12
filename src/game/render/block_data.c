@@ -1,5 +1,6 @@
 #include "block_data.h"
 
+// Define 2d array of vec3s' to store vertex data for a block
 vec3s vertexData[6][4] = {
 
 	// Front
@@ -46,6 +47,7 @@ vec3s vertexData[6][4] = {
 	}
 };
 
+// Face type info containing texture atlas positions
 FaceTypeInfo grassTopInfo = {
 	.column = 0,
 	.row = 0
@@ -66,6 +68,7 @@ FaceTypeInfo stoneInfo = {
 	.row = 0
 };
 
+// External face type info array
 FaceTypeInfo* faceTypeInfo[FACE_TYPE_ENUM_LENGTH] = {
 	&grassTopInfo,
 	&grassSideInfo,
@@ -73,14 +76,15 @@ FaceTypeInfo* faceTypeInfo[FACE_TYPE_ENUM_LENGTH] = {
 	&stoneInfo
 };
 
+// Stores face types for each block type
 BlockTypeInfo grassBlockInfo = {
 	.faceType = {
-		FACE_TYPE_GRASS_SIDE,
-		FACE_TYPE_GRASS_SIDE,
-		FACE_TYPE_GRASS_SIDE,
-		FACE_TYPE_GRASS_SIDE,
-		FACE_TYPE_GRASS_TOP,
-		FACE_TYPE_DIRT
+		FACE_TYPE_GRASS_SIDE, // Front face
+		FACE_TYPE_GRASS_SIDE, // Back face
+		FACE_TYPE_GRASS_SIDE, // Left face
+		FACE_TYPE_GRASS_SIDE, // Right face
+		FACE_TYPE_GRASS_TOP,  // Top face
+		FACE_TYPE_DIRT        // Bottom face
 	}
 };
 
@@ -106,8 +110,9 @@ BlockTypeInfo stoneBlockInfo = {
 	}
 };
 
+// External block type info array
 BlockTypeInfo* blockTypeInfo[BLOCK_TYPE_ENUM_LENGTH] = {
-	NULL,
+	NULL, // BLOCK_TYPE_EMPTY
 	&grassBlockInfo,
 	&dirtBlockInfo,
 	&stoneBlockInfo

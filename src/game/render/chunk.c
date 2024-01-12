@@ -11,17 +11,23 @@
 #define FNL_IMPL
 #include "../../include/FastNoiseLite.h"
 
+// Function to append face data from a block to the chunk mesh
 static void appendFaceData(Chunk* chunk, FaceData data) {
 
+	// Loop through each vertex and uv
 	for (int i = 0; i < 4; i++) {
+		// Add verticies
 		chunk->vertices[chunk->info.vertexCount]  = data.vertices[i];
-		chunk->uvs[chunk->info.vertexCount] = data.uvs[i];
-		chunk->info.vertexCount++;
+		// Add uvs and incrament vertex count
+		chunk->uvs[chunk->info.vertexCount++] = data.uvs[i];
 	}
+	// Incrament face counter
 	chunk->info.faceCount++;
 }
 
+// Function to append indices to chunk mesh
 static void appendIndices(Chunk* chunk) {
+	// Loop through each face in chunk and add indices
 	for (int i = 0; i < chunk->info.faceCount; i++) {
 		chunk->indices[chunk->info.indexCount++] = 0 + chunk->info.uniqueIndexCount;
 		chunk->indices[chunk->info.indexCount++] = 1 + chunk->info.uniqueIndexCount;
@@ -30,23 +36,24 @@ static void appendIndices(Chunk* chunk) {
 		chunk->indices[chunk->info.indexCount++] = 2 + chunk->info.uniqueIndexCount;
 		chunk->indices[chunk->info.indexCount++] = 3 + chunk->info.uniqueIndexCount;
 
+		// Incrament unique index count by 4 which determines the value of the index
 		chunk->info.uniqueIndexCount += 4;
 	}
 }
 
-
-
-static struct Heightmap generateChunk() {
+// Return a heightmap struct generated using FastNoiseLite
+static Heightmap generateChunk() {
 	// Create and configure noise state
 	fnl_state noise = fnlCreateState();
 	noise.noise_type = FNL_NOISE_OPENSIMPLEX2;
 
-	// Gather noise data
-	struct Heightmap heightmap = {
+	// Set some hightmap attributes
+	Heightmap heightmap = {
 		.heightVariation = 8,
 		.minHeight = 4
 	};
 
+	// Gather noise data
 	for (int x = 0; x < CHUNK_SIZE; x++)
 	{
 		for (int y = 0; y < CHUNK_SIZE; y++) 
@@ -58,18 +65,27 @@ static struct Heightmap generateChunk() {
 	return heightmap;
 }
 
+// Function to generate all blocks in a chunk
 static void generateBlocks(Chunk* chunk) {
-
+	
+	// Loop through all x rows in chunk
 	for (int x = 0; x < CHUNK_SIZE; x++) {
+		// Loop through all z positions in x row
 		for (int z = 0; z < CHUNK_SIZE; z++) {
+			// Loop through all y positions in x, z column
 			for (int y = 0; y < CHUNK_HEIGHT; y++) {
+				// Define column height using x, z, position in hightmap
 				f32 columnHeight = chunk->heightmap.data[x][z];
+				// Generate grass blocks on top layer
 				if (y < columnHeight && y >= columnHeight-1) {
 					chunk->blocks[x][y][z] = createBlock((vec3s){{x, y, z}}, BLOCK_TYPE_GRASS);
+				// Generate dirt on next 2 layers
 				} else if (y < columnHeight-1 && y >= columnHeight-3) {
 					chunk->blocks[x][y][z] = createBlock((vec3s){{x, y, z}}, BLOCK_TYPE_DIRT);
+				// Fill rest of the way down with stone
 				} else if (y < columnHeight-3) {
 					chunk->blocks[x][y][z] = createBlock((vec3s){{x, y, z}}, BLOCK_TYPE_STONE);
+				// Everything else is made empty
 				} else {
 					chunk->blocks[x][y][z] = createBlock((vec3s){{x, y, z}}, BLOCK_TYPE_EMPTY);
 				}
@@ -78,7 +94,9 @@ static void generateBlocks(Chunk* chunk) {
 	}
 }
 
+// Function to generate faces using the blocks in the chunk
 static void generateFaces(Chunk* chunk) {
+	// Loop through positions in chunk below the heightmap
 	for (int x = 0; x < CHUNK_SIZE; x++) {
 		for (int z = 0; z < CHUNK_SIZE; z++) {
 			for (int y = 0; y < chunk->heightmap.data[x][z]; y++) {
@@ -133,26 +151,32 @@ static void generateFaces(Chunk* chunk) {
 			}
 		}
 	}
+	// After all faces have been added,
+	// indicies can be added using the face count
 	appendIndices(chunk);
 }
 
+// Function to build the chunk buffers for OpenGL to render
 static void buildChunk(Chunk* chunk) {
 
+	// Create a vertex array object for the chunk
 	vaoCreate(&chunk->vao);
 
+	// Create vertex buffer for chunk vertices
 	vboCreate(&chunk->vertexVbo, &chunk->vertices, sizeof(chunk->vertices), false);
 	vaoAttrib(0, 3, 0, 0);
-
+	// Create vertex buffer for chunk uvs
 	vboCreate(&chunk->uvVbo, &chunk->uvs, sizeof(chunk->uvs), false);
 	vaoAttrib(1, 2, 0, 0);
-
+	// Create element buffer for chunk vertices
 	eboCreate(&chunk->ebo, &chunk->indices, sizeof(chunk->indices), false);
 
-	chunk->texture = textureCreate("assets/atlas.png");
+	// Unbind vao and vbo
 	vboUnbind();
 	vaoUnbind();
 }
 
+// Function to return a chunk struct using a given world position
 Chunk createChunk(vec3s position) {
 	Chunk self = {
 		.position = position,
@@ -160,6 +184,7 @@ Chunk createChunk(vec3s position) {
 		.info = {0}
 	};
 
+	// Generate chunk data
 	generateBlocks(&self);
 	generateFaces(&self);
 	buildChunk(&self);
@@ -167,11 +192,18 @@ Chunk createChunk(vec3s position) {
 	return self;
 }
 
+// Function to render a chunk mesh
 void renderChunk(Chunk* chunk) {
+	// Bind shader and set a shader uniform for the model matrix
 	shaderBind(&shaders.shaderDefault);
-	shaderUniform(&shaders.shaderDefault, "model", glms_translate(glms_mat4_identity(), chunk->position).raw[0]);
-	vaoBind(chunk->vao);
-	textureBind(chunk->texture.id);
+	shaderUniform(&shaders.shaderDefault,
+		"model",
+		glms_translate(glms_mat4_identity(), chunk->position).raw[0]);
+	// Bind chunk vao and texture
+	vaoBind(&chunk->vao);
+	textureBind(textures.altas.id);
+
+	// Draw elements from chunk indices
 	glDrawElements(GL_TRIANGLES, chunk->info.indexCount, GL_UNSIGNED_INT, 0);
 }
 

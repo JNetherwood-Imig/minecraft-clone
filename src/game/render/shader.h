@@ -2,16 +2,22 @@
 
 #include "../util/types.h"
 
-typedef struct shader {
+// Define shader struct with currently only a program id
+typedef struct Shader {
 	u32 id;
 } Shader;
 
-typedef struct shaders {
+// Define struct for holding all shaders
+// Currently there is only 1 shader,
+// but this way more can be easily added
+typedef struct Shaders {
     Shader shaderDefault;
 } Shaders;
 
+// Create external shaders struct
 extern Shaders shaders;
 
+// Define shader utility function prototypes
 Shader shaderCreate(const char* vertexShaderPath, const char* fragmentShaderPath);
 void shaderBind(Shader* shader);
 void shaderUnbind(void);
