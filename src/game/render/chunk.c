@@ -8,9 +8,8 @@
 #include "texture.h"
 #include <glad/glad.h>
 #include <cglm/struct.h>
-#include <stdio.h>
 #define FNL_IMPL
-#include "../util/FastNoiseLite.h"
+#include "../../include/FastNoiseLite.h"
 
 static void appendFaceData(Chunk* chunk, FaceData data) {
 

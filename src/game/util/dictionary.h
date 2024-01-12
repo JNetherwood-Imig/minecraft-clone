@@ -3,11 +3,13 @@
 #include "types.h"
 #include <cglm/types.h>
 
-// const u32 MAX_SIZE = 64;
+// NOT IN USE
+
+#define MAX_SIZE = 64
 
 typedef struct dictionary {
-    i32 keys[64];
-    void* values[64];
+    i32 keys[MAX_SIZE];
+    void* values[MAX_SIZE];
 	u32 size;
 } Dictionary;
 

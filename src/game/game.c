@@ -5,32 +5,27 @@
 #include "time.h"
 #include "camera.h"
 
-static void inputHandle(void) {
-	if (input.key[INPUT_KEY_ESCAPE] == KS_PRESSED || input.key[INPUT_KEY_ESCAPE] == KS_HELD) {
-		glfwSetWindowShouldClose(renderer.window, GLFW_TRUE);
-	}
-}
-
+// Main game function
 void gameRun(void) {
 
+	// Run all init functions
 	renderInit();
 	configInit();
 	timeInit();
 	cameraInit();
+	inputInit();
 
-	glfwSetInputMode(renderer.window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glfwSetKeyCallback(renderer.window, keyCallback);
-	glfwSetCursorPosCallback(renderer.window, cursorCallback);
-
+	// Main game loop
 	while (!glfwWindowShouldClose(renderer.window)) {
 
+		// Main game calls
 		renderBegin();
-		inputHandle();
 		cameraUpdate();
 		renderMain();
 		renderEnd();
 		timeUpdate();
 	}
 
-	// renderClean();
+	// Delete buffers, shaders and more, and terminate GLFW
+	renderTerminate();
 }

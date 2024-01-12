@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <inttypes.h>
 
+// Basic data types with better names
 typedef uint8_t		u8;
 typedef uint16_t	u16;
 typedef uint32_t	u32;

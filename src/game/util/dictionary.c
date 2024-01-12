@@ -2,6 +2,8 @@
 #include <cglm/types.h>
 #include <stdio.h>
 
+// NOT IN USE
+
 u32 getIndex(Dictionary* dict, i32 key) {
     for (int i = 0; i < dict->size; i++) {
         if (dict->keys[i] == key) {

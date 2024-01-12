@@ -1,7 +1,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <cglm/cglm.h>
-#include <cglm/struct/mat4.h>
+#include <cglm/struct.h>
 #include "../renderer.h"
 #include "shader.h"
 #include "chunk.h"
@@ -51,9 +50,8 @@ static GLFWwindow* createWindow(u32 width, u32 height) {
 }
 
 static void renderCameraUpdate(void) {
-	vec3 cameraCenter;
-	glm_vec3_add(camera.position, camera.front, cameraCenter);
-	glm_lookat(camera.position, cameraCenter, camera.up, renderer.state.view.raw);
+	vec3s cameraCenter = glms_vec3_add(camera.position, camera.front);
+	renderer.state.view = glms_lookat(camera.position, cameraCenter, camera.up);
 }
 
 Chunk chunk;
@@ -67,6 +65,7 @@ void renderInit(void) {
 	chunk = createChunk((vec3s){{0.0f, 0.0f, 0.0f}});
 
 	glfwSetFramebufferSizeCallback(renderer.window, framebufferSizeCallback);
+
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
@@ -79,11 +78,13 @@ void renderInit(void) {
 }
 
 void renderBegin(void) {
+
 	glClearColor(0.0, 1.0, 1.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	shaderUniform(&shaders.shaderDefault, "view", renderer.state.view.raw[0]);
 	shaderUniform(&shaders.shaderDefault, "projection", renderer.state.projection.raw[0]);
+
 	glm_perspective(
 		glm_rad(camera.fov),
 		(f32)renderer.width / (f32)renderer.height,
@@ -102,3 +103,7 @@ void renderEnd(void) {
 	glfwSwapBuffers(renderer.window);
 }
 
+void renderTerminate(void) {
+	glfwTerminate();
+	shaderDelete(&shaders.shaderDefault);
+}

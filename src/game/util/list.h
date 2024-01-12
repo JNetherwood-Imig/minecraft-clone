@@ -2,6 +2,8 @@
 
 #include "types.h"
 
+// NOT IN USE
+
 typedef struct node {
     void* data;
     struct node* next;

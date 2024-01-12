@@ -1,21 +1,24 @@
 #pragma once
 
-#include <cglm/vec3.h>
+#include <cglm/types-struct.h>
 #include "util/types.h"
 
-typedef struct camera {
+// Camera struct to store all camera data
+typedef struct Camera {
 	f32 speed;
 	f32 fov;
 	f32 yaw;
 	f32 pitch;
-	vec3 position;
-	vec3 front;
-	vec3 forward;
-	vec3 right;
-	vec3 up;
+	vec3s position;
+	vec3s front;
+	vec3s forward;
+	vec3s right;
+	vec3s up;
 } Camera;
 
+// Create external camera object
 extern Camera camera;
 
+// Define function prototypes for initializing and updating camera data
 void cameraInit(void);
 void cameraUpdate(void);

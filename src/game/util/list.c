@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <assert.h>
 
+// NOT IN USE
+
 void listCreate(List* list) {
     list->head = NULL;
     list->length = 0;
