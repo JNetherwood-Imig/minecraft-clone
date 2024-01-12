@@ -6,7 +6,8 @@
 typedef struct Block {
 	vec3s postiton;
 	BlockType type;
-	BlockTypeInfo typeInfo;
+	BlockTypeInfo* blockTypeInfo;
+	FaceTypeInfo faceTypeInfo;
 	FaceData faces[6];
 } Block;
 

@@ -8,6 +8,7 @@
 #include "texture.h"
 #include <glad/glad.h>
 #include <cglm/struct.h>
+#include <stdio.h>
 #define FNL_IMPL
 #include "../util/FastNoiseLite.h"
 
@@ -63,8 +64,13 @@ static void generateBlocks(Chunk* chunk) {
 	for (int x = 0; x < CHUNK_SIZE; x++) {
 		for (int z = 0; z < CHUNK_SIZE; z++) {
 			for (int y = 0; y < CHUNK_HEIGHT; y++) {
-				if (y < chunk->heightmap.data[x][z]) {
+				f32 columnHeight = chunk->heightmap.data[x][z];
+				if (y < columnHeight && y >= columnHeight-1) {
 					chunk->blocks[x][y][z] = createBlock((vec3s){{x, y, z}}, BLOCK_TYPE_GRASS);
+				} else if (y < columnHeight-1 && y >= columnHeight-3) {
+					chunk->blocks[x][y][z] = createBlock((vec3s){{x, y, z}}, BLOCK_TYPE_DIRT);
+				} else if (y < columnHeight-3) {
+					chunk->blocks[x][y][z] = createBlock((vec3s){{x, y, z}}, BLOCK_TYPE_STONE);
 				} else {
 					chunk->blocks[x][y][z] = createBlock((vec3s){{x, y, z}}, BLOCK_TYPE_EMPTY);
 				}

@@ -2,7 +2,7 @@ CFLAGS = -Wall -std=c2x -g
 LFLAGS = -lglfw -lGL -lm
 LFLAGSX = -framework OpenGL -lglfw
 OBJDIR = out/objects/
-OBJECTS = $(OBJDIR)main.o $(OBJDIR)io.o $(OBJDIR)input.o $(OBJDIR)global.o $(OBJDIR)game.o $(OBJDIR)config.o
+OBJECTS = $(OBJDIR)main.o $(OBJDIR)io.o $(OBJDIR)input.o $(OBJDIR)game.o $(OBJDIR)config.o
 OBJECTS += $(OBJDIR)time.o $(OBJDIR)camera.o $(OBJDIR)renderer.o
 OBJECTS += $(OBJDIR)glad.o $(OBJDIR)shader.o $(OBJDIR)vao.o $(OBJDIR)vbo.o $(OBJDIR)ebo.o
 OBJECTS += $(OBJDIR)texture.o $(OBJDIR)chunk.o $(OBJDIR)block_data.o $(OBJDIR)block.o
@@ -26,9 +26,6 @@ $(OBJDIR)io.o: src/game/io/*
 
 $(OBJDIR)input.o: src/game/input/*
 	gcc $(CFLAGS) -c src/game/input/input.c -o $(OBJDIR)input.o
-
-$(OBJDIR)global.o: src/game/global.*
-	gcc $(CFLAGS) -c src/game/global.c -o $(OBJDIR)global.o
 
 $(OBJDIR)renderer.o: src/game/render/*
 	# gcc $(CFLAGS) -c src/game/render/render.c -o $(OBJDIR)render.o

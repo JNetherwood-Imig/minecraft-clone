@@ -12,7 +12,7 @@ static void addTransformedVertices(FaceData* destination, vec3s* vertices, vec3s
 	}
 }
 
-static void addUvs(FaceData* destination, BlockTypeInfo* typeInfo) {
+static void addUvs(FaceData* destination, FaceTypeInfo* typeInfo) {
 	// Top left
 	destination->uvs[0].u = typeInfo->column * atlasTextureScale;
 	destination->uvs[0].v = typeInfo->row * atlasTextureScale;
@@ -27,17 +27,23 @@ static void addUvs(FaceData* destination, BlockTypeInfo* typeInfo) {
 	destination->uvs[3].v = (typeInfo->row+1) * atlasTextureScale;
 }
 
+static FaceType getFaceType(Block* block, u32 face) {
+	return block->blockTypeInfo->faceType[face];
+}
+
 Block createBlock(vec3s position, BlockType type) {
 
 	Block self = {
 		.postiton = position,
-		// .atlasInfo = &atlasInfo[type],
+		.blockTypeInfo = blockTypeInfo[type],
 		.type = type
 	};
 
-	for (int i = 0; i < 6; i++) {
-		addTransformedVertices(&self.faces[i], vertexData[i], self.postiton);
-		addUvs(&self.faces[i], typeInfo[FACE_TYPE_GRASS_TOP]);
+	if (type != BLOCK_TYPE_EMPTY) {
+		for (int face = 0; face < 6; face++) {
+			addTransformedVertices(&self.faces[face], vertexData[face], self.postiton);
+			addUvs(&self.faces[face], faceTypeInfo[getFaceType(&self, face)]);
+		}
 	}
 
 	return self;

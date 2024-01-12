@@ -1,7 +1,6 @@
 #include <GLFW/glfw3.h>
 #include <string.h>
 #include "../config.h"
-#include "../global.h"
 #include "../io.h"
 #include "../util/utils.h"
 #include "../input.h"

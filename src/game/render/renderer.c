@@ -7,6 +7,7 @@
 #include "chunk.h"
 #include "../camera.h"
 #include "../util/utils.h"
+#include <stdio.h>
 
 Renderer renderer = {0};
 

@@ -46,23 +46,65 @@ vec3s vertexData[6][4] = {
 	}
 };
 
-BlockTypeInfo grassTopInfo = {
+FaceTypeInfo grassTopInfo = {
 	.column = 0,
 	.row = 0
 };
 
-BlockTypeInfo grassSideInfo = {
+FaceTypeInfo grassSideInfo = {
 	.column = 1,
 	.row = 0
 };
 
-BlockTypeInfo dirtInfo = {
+FaceTypeInfo dirtInfo = {
 	.column = 2,
 	.row = 0
 };
 
-BlockTypeInfo* typeInfo[3] = {
+FaceTypeInfo stoneInfo = {
+	.column = 3,
+	.row = 0
+};
+
+FaceTypeInfo* faceTypeInfo[FACE_TYPE_ENUM_LENGTH] = {
 	&grassTopInfo,
 	&grassSideInfo,
-	&dirtInfo
+	&dirtInfo,
+	&stoneInfo
+};
+
+BlockTypeInfo grassBlockInfo = {
+	.faceType = {
+		FACE_TYPE_GRASS_SIDE,
+		FACE_TYPE_GRASS_SIDE,
+		FACE_TYPE_GRASS_SIDE,
+		FACE_TYPE_GRASS_SIDE,
+		FACE_TYPE_GRASS_TOP,
+		FACE_TYPE_DIRT
+	}
+};
+
+BlockTypeInfo dirtBlockInfo = {
+	FACE_TYPE_DIRT,
+	FACE_TYPE_DIRT,
+	FACE_TYPE_DIRT,
+	FACE_TYPE_DIRT,
+	FACE_TYPE_DIRT,
+	FACE_TYPE_DIRT
+};
+
+BlockTypeInfo stoneBlockInfo = {
+	FACE_TYPE_STONE,
+	FACE_TYPE_STONE,
+	FACE_TYPE_STONE,
+	FACE_TYPE_STONE,
+	FACE_TYPE_STONE,
+	FACE_TYPE_STONE
+};
+
+BlockTypeInfo* blockTypeInfo[BLOCK_TYPE_ENUM_LENGTH] = {
+	NULL,
+	&grassBlockInfo,
+	&dirtBlockInfo,
+	&stoneBlockInfo
 };

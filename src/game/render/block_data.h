@@ -15,13 +15,17 @@ typedef enum BlockFace {
 typedef enum BlockType {
 	BLOCK_TYPE_EMPTY,
 	BLOCK_TYPE_GRASS,
-	BLOCK_TYPE_DIRT
+	BLOCK_TYPE_DIRT,
+	BLOCK_TYPE_STONE,
+	BLOCK_TYPE_ENUM_LENGTH
 } BlockType;
 
 typedef enum FaceType {
 	FACE_TYPE_GRASS_TOP,
 	FACE_TYPE_GRASS_SIDE,
-	FACE_TYPE_DIRT
+	FACE_TYPE_DIRT,
+	FACE_TYPE_STONE,
+	FACE_TYPE_ENUM_LENGTH
 } FaceType;
 
 typedef enum UvPositions {
@@ -36,10 +40,15 @@ typedef struct FaceData {
     vec2s uvs[4];
 } FaceData;
 
-typedef struct BlockTypeInfo {
+typedef struct FaceTypeInfo {
 	u32 column;
 	u32 row;
+} FaceTypeInfo;
+
+typedef struct BlockTypeInfo {
+	FaceType faceType[6];
 } BlockTypeInfo;
 
 extern vec3s vertexData[6][4];
-extern BlockTypeInfo* typeInfo[3];
+extern FaceTypeInfo* faceTypeInfo[FACE_TYPE_ENUM_LENGTH];
+extern BlockTypeInfo* blockTypeInfo[BLOCK_TYPE_ENUM_LENGTH];
