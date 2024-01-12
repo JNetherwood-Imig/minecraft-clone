@@ -65,7 +65,6 @@ void shaderUnbind(void) {
 
 void shaderDelete(Shader* shader) {
 	glDeleteShader(shader->id);
-	free(shader);
 }
 
 void shaderUniform(Shader* shader, const char* uniform, f32* value) {
