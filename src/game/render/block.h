@@ -5,7 +5,9 @@
 
 typedef struct Block {
 	vec3s postiton;
+	BlockType type;
+	BlockTypeInfo typeInfo;
 	FaceData faces[6];
 } Block;
 
-Block createBlock(vec3s position);
+Block createBlock(vec3s position, BlockType type);

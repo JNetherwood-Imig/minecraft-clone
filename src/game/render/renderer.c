@@ -67,6 +67,9 @@ void renderInit(void) {
 
 	glfwSetFramebufferSizeCallback(renderer.window, framebufferSizeCallback);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CW);
 
 	shaderBind(&shaders.shaderDefault);
 

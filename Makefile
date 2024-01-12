@@ -1,6 +1,6 @@
 CFLAGS = -Wall -std=c2x -g
 LFLAGS = -lglfw -lGL -lm
-LFLAGSX = -framework OpenGL -lglfw -lGLEW
+LFLAGSX = -framework OpenGL -lglfw
 OBJDIR = out/objects/
 OBJECTS = $(OBJDIR)main.o $(OBJDIR)io.o $(OBJDIR)input.o $(OBJDIR)global.o $(OBJDIR)game.o $(OBJDIR)config.o
 OBJECTS += $(OBJDIR)time.o $(OBJDIR)camera.o $(OBJDIR)renderer.o
@@ -13,7 +13,7 @@ run: out/program
 
 out/program: $(OBJECTS)
 	# cp out/program out/program-last
-	gcc $(LFLAGS) $(OBJECTS) -o out/program
+	gcc $(LFLAGSX) $(OBJECTS) -o out/program
 
 $(OBJDIR)main.o: src/main.c
 	gcc $(CFLAGS) -c src/main.c -o $(OBJDIR)main.o

@@ -46,10 +46,23 @@ vec3s vertexData[6][4] = {
 	}
 };
 
-vec2s uvData[4] = {
-	{{ 0.0f, 0.0f }}, // Top left
-	{{ 1.0f, 0.0f }}, // Top right
-	{{ 1.0f, 1.0f }}, // Bottom left
-	{{ 0.0f, 1.0f }}  // Bottom right
+BlockTypeInfo grassTopInfo = {
+	.column = 0,
+	.row = 0
 };
 
+BlockTypeInfo grassSideInfo = {
+	.column = 1,
+	.row = 0
+};
+
+BlockTypeInfo dirtInfo = {
+	.column = 2,
+	.row = 0
+};
+
+BlockTypeInfo* typeInfo[3] = {
+	&grassTopInfo,
+	&grassSideInfo,
+	&dirtInfo
+};

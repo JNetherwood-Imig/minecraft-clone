@@ -8,8 +8,10 @@
 #include "texture.h"
 #include <glad/glad.h>
 #include <cglm/struct.h>
+#define FNL_IMPL
+#include "../util/FastNoiseLite.h"
 
-static void appendVertices(Chunk* chunk, FaceData data) {
+static void appendFaceData(Chunk* chunk, FaceData data) {
 
 	for (int i = 0; i < 4; i++) {
 		chunk->vertices[chunk->info.vertexCount]  = data.vertices[i];
@@ -27,29 +29,107 @@ static void appendIndices(Chunk* chunk) {
 		chunk->indices[chunk->info.indexCount++] = 1 + chunk->info.uniqueIndexCount;
 		chunk->indices[chunk->info.indexCount++] = 2 + chunk->info.uniqueIndexCount;
 		chunk->indices[chunk->info.indexCount++] = 3 + chunk->info.uniqueIndexCount;
+
 		chunk->info.uniqueIndexCount += 4;
 	}
 }
 
-static void generateBlocks(Chunk* chunk) {
-	for (int i = 0; i < 3; i++) {
-		Block block = createBlock((vec3s){{i, 0.0f, 0.0f}});
-		
-		if (i == 0) {
-			appendVertices(chunk, block.faces[BLOCK_FACE_LEFT]);
-		}
-		if (i == 2) {
-			appendVertices(chunk, block.faces[BLOCK_FACE_RIGHT]);
-		}
-		appendVertices(chunk, block.faces[BLOCK_FACE_FRONT]);
-		appendVertices(chunk, block.faces[BLOCK_FACE_BACK]);
-		appendVertices(chunk, block.faces[BLOCK_FACE_TOP]);
-		appendVertices(chunk, block.faces[BLOCK_FACE_BOTTOM]);
 
-		appendIndices(chunk);
+
+static struct Heightmap generateChunk() {
+	// Create and configure noise state
+	fnl_state noise = fnlCreateState();
+	noise.noise_type = FNL_NOISE_OPENSIMPLEX2;
+
+	// Gather noise data
+	struct Heightmap heightmap = {
+		.heightVariation = 8,
+		.minHeight = 4
+	};
+
+	for (int x = 0; x < CHUNK_SIZE; x++)
+	{
+		for (int y = 0; y < CHUNK_SIZE; y++) 
+		{
+			heightmap.data[x][y] = heightmap.minHeight + (heightmap.heightVariation * fnlGetNoise2D(&noise, x, y));
+		}
+	}
+
+	return heightmap;
+}
+
+static void generateBlocks(Chunk* chunk) {
+
+	for (int x = 0; x < CHUNK_SIZE; x++) {
+		for (int z = 0; z < CHUNK_SIZE; z++) {
+			for (int y = 0; y < CHUNK_HEIGHT; y++) {
+				if (y < chunk->heightmap.data[x][z]) {
+					chunk->blocks[x][y][z] = createBlock((vec3s){{x, y, z}}, BLOCK_TYPE_GRASS);
+				} else {
+					chunk->blocks[x][y][z] = createBlock((vec3s){{x, y, z}}, BLOCK_TYPE_EMPTY);
+				}
+			}
+		}
 	}
 }
 
+static void generateFaces(Chunk* chunk) {
+	for (int x = 0; x < CHUNK_SIZE; x++) {
+		for (int z = 0; z < CHUNK_SIZE; z++) {
+			for (int y = 0; y < chunk->heightmap.data[x][z]; y++) {
+				// Left faces: add if block to the left is empty or is farthest left in chunk
+				if (x > 0) {
+					if (chunk->blocks[x-1][y][z].type == BLOCK_TYPE_EMPTY) {
+						appendFaceData(chunk, chunk->blocks[x][y][z].faces[BLOCK_FACE_LEFT]);
+					}
+				} else {
+					appendFaceData(chunk, chunk->blocks[x][y][z].faces[BLOCK_FACE_LEFT]);
+				}
+				// Right faces: add if block to the right is empty or if is farthest right in chunk
+				if (x < CHUNK_SIZE-1) {
+					if (chunk->blocks[x][y][z].type == BLOCK_TYPE_EMPTY) {
+						appendFaceData(chunk, chunk->blocks[x][y][z].faces[BLOCK_FACE_RIGHT]);
+					}
+				} else {
+					appendFaceData(chunk, chunk->blocks[x][y][z].faces[BLOCK_FACE_RIGHT]);
+				}
+				// Front faces: add if block in front is empty or if is farthest forward in chunk
+				if (z < CHUNK_SIZE-1) {
+					if (chunk->blocks[x][y][z].type == BLOCK_TYPE_EMPTY) {
+						appendFaceData(chunk, chunk->blocks[x][y][z].faces[BLOCK_FACE_FRONT]);
+					}
+				} else {
+					appendFaceData(chunk, chunk->blocks[x][y][z].faces[BLOCK_FACE_FRONT]);
+				}
+				// Back faces: add if block behind is empty or if is farthest back in chunk
+				if (z > 0) {
+					if (chunk->blocks[x][y][z-1].type == BLOCK_TYPE_EMPTY) {
+						appendFaceData(chunk, chunk->blocks[x][y][z].faces[BLOCK_FACE_BACK]);
+					}
+				} else {
+					appendFaceData(chunk, chunk->blocks[x][y][z].faces[BLOCK_FACE_BACK]);
+				}
+				// Top faces: add if block above is empty or if is top in chunk
+				if (y < chunk->heightmap.data[x][z]-1) {
+					if (chunk->blocks[x][y][z].type == BLOCK_TYPE_EMPTY) {
+						appendFaceData(chunk, chunk->blocks[x][y][z].faces[BLOCK_FACE_TOP]);
+					}
+				} else {
+					appendFaceData(chunk, chunk->blocks[x][y][z].faces[BLOCK_FACE_TOP]);
+				}
+				// Bottom faces: add if block below is empty or if is lowest in chunk
+				if (y > 0) {
+					if (chunk->blocks[x][y-1][z].type == BLOCK_TYPE_EMPTY) {
+						appendFaceData(chunk, chunk->blocks[x][y][z].faces[BLOCK_FACE_BOTTOM]);
+					}
+				} else {
+					appendFaceData(chunk, chunk->blocks[x][y][z].faces[BLOCK_FACE_BOTTOM]);
+				}
+			}
+		}
+	}
+	appendIndices(chunk);
+}
 
 static void buildChunk(Chunk* chunk) {
 
@@ -63,7 +143,7 @@ static void buildChunk(Chunk* chunk) {
 
 	eboCreate(&chunk->ebo, &chunk->indices, sizeof(chunk->indices), false);
 
-	chunk->texture = textureCreate("assets/grass.png");
+	chunk->texture = textureCreate("assets/atlas.png");
 	vboUnbind();
 	vaoUnbind();
 }
@@ -71,9 +151,12 @@ static void buildChunk(Chunk* chunk) {
 Chunk createChunk(vec3s position) {
 	Chunk self = {
 		.position = position,
+		.heightmap = generateChunk(),
 		.info = {0}
 	};
+
 	generateBlocks(&self);
+	generateFaces(&self);
 	buildChunk(&self);
 
 	return self;

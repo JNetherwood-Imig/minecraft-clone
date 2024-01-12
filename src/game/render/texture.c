@@ -30,7 +30,6 @@ Texture textureCreate(const char* filePath) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	i32 width, height, channels;
-	stbi_set_flip_vertically_on_load(1);
 	unsigned char* data = stbi_load(filePath, &width, &height, &channels, 0);
 
 	if (data) {
