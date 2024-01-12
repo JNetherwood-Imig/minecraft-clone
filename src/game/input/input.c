@@ -70,7 +70,7 @@ void keyCallback(GLFWwindow* window, i32 key, i32 scancode, i32 action, i32 mods
 	}
 
 	// Check for escape key event and close window
-	if (key == input.key[INPUT_KEY_ESCAPE] && action == GLFW_PRESS) {
+	if (key == config.keybinds[INPUT_KEY_ESCAPE] && action == GLFW_PRESS) {
 		glfwSetWindowShouldClose(renderer.window, GLFW_TRUE);
 	}
 }

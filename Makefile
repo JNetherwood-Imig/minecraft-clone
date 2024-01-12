@@ -6,7 +6,6 @@ OBJECTS = $(OBJDIR)main.o $(OBJDIR)io.o $(OBJDIR)input.o $(OBJDIR)game.o $(OBJDI
 OBJECTS += $(OBJDIR)time.o $(OBJDIR)camera.o $(OBJDIR)renderer.o
 OBJECTS += $(OBJDIR)glad.o $(OBJDIR)shader.o $(OBJDIR)vao.o $(OBJDIR)vbo.o $(OBJDIR)ebo.o
 OBJECTS += $(OBJDIR)texture.o $(OBJDIR)chunk.o $(OBJDIR)block_data.o $(OBJDIR)block.o
-OBJECTS += $(OBJDIR)dictionary.o $(OBJDIR)list.o
 
 run: out/program
 	./out/program
@@ -28,8 +27,6 @@ $(OBJDIR)input.o: src/game/input/*
 	gcc $(CFLAGS) -c src/game/input/input.c -o $(OBJDIR)input.o
 
 $(OBJDIR)renderer.o: src/game/render/*
-	# gcc $(CFLAGS) -c src/game/render/render.c -o $(OBJDIR)render.o
-	# gcc $(CFLAGS) -c src/game/render/render_init.c -o $(OBJDIR)render_init.o
 	gcc $(CFLAGS) -c src/game/render/renderer.c -o $(OBJDIR)renderer.o
 	gcc $(CFLAGS) -c src/game/render/shader.c -o $(OBJDIR)shader.o
 	gcc $(CFLAGS) -c src/game/render/vao.c -o $(OBJDIR)vao.o
@@ -52,12 +49,6 @@ $(OBJDIR)time.o: src/game/time/*
 
 $(OBJDIR)camera.o: src/game/camera/*
 	gcc $(CFLAGS) -c src/game/camera/camera.c -o $(OBJDIR)camera.o
-
-$(OBJDIR)dictionary.o: src/game/util/dictionary.*
-	gcc $(CFLAGS) -c src/game/util/dictionary.c -o $(OBJDIR)dictionary.o
-
-$(OBJDIR)list.o: src/game/util/list.*
-	gcc $(CFLAGS) -c src/game/util/list.c -o $(OBJDIR)list.o
 
 clean:
 	rm $(OBJDIR)* out/program
