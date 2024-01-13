@@ -1,4 +1,4 @@
-#include <glad/glad.h>
+#include "../../include/glad/glad.h"
 #include "../util/types.h"
 
 // Create a vao with the given id and make it active

@@ -1,4 +1,4 @@
-#include <cglm/struct.h>
+#include "../../include/cglm/struct.h"
 #include "../camera.h"
 #include "../input.h"
 #include "../time.h"

@@ -1,5 +1,5 @@
 #include <stdbool.h>
-#include <glad/glad.h>
+#include "../../include/glad/glad.h"
 #include "../util/types.h"
 
 // Abstraction for binding a vbo

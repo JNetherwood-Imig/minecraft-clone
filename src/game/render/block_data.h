@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cglm/types-struct.h>
+#include "../../include/cglm/types-struct.h"
 #include "../util/types.h"
 
 // Store block faces for easy access

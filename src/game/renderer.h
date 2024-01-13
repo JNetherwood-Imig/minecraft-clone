@@ -1,7 +1,7 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
-#include <cglm/types-struct.h>
+#include "../include/cglm/types-struct.h"
 #include "util/types.h"
 
 // Define renderer state struct with view and projection matricies

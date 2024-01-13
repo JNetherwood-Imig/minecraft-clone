@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cglm/types-struct.h>
+#include "../../include/cglm/types-struct.h"
 #include "block.h"
 #include "shader.h"
 #include "texture.h"

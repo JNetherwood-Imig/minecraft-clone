@@ -6,8 +6,8 @@
 #include "vbo.h"
 #include "ebo.h"
 #include "texture.h"
-#include <glad/glad.h>
-#include <cglm/struct.h>
+#include "../../include/glad/glad.h"
+#include "../../include/cglm/struct.h"
 #define FNL_IMPL
 #include "../../include/FastNoiseLite.h"
 

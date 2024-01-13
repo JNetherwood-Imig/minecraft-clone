@@ -1,7 +1,7 @@
 #include "block.h"
 #include "block_data.h"
 #include "texture.h"
-#include <cglm/struct.h>
+#include "../../include/cglm/struct.h"
 
 // Texture atlas information
 // Texture atlas size (pixels)

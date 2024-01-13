@@ -1,7 +1,7 @@
 #pragma once
 
 #include "block_data.h"
-#include <cglm/types-struct.h>
+#include "../../include/cglm/types-struct.h"
 
 // Block struct to sore all attributes of a block
 typedef struct Block {
